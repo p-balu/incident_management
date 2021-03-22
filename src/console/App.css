@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+.FormField,
+.From {
+  display: flex;
+  flex-direction: column;
+}
+.AdminField__Input {
+  padding: 10px 10px;
+  margin: 4px;
+}
