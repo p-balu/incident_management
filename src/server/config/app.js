@@ -28,6 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 
 //import routes
 let incidentsRouter = require("../routes/incidents");
+let auth = require("../routes/auth");
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -36,6 +37,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
 
 app.use("/api", incidentsRouter);
+app.use("/api/auth", auth);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
