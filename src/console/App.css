@@ -45,3 +45,11 @@
   padding: 10px 10px;
   margin: 4px;
 }
+.dashboardClass {
+  display: flex;
+  color: white;
+  margin-top: 5%;
+}
+.textContainer {
+  margin-left: 15%;
+}
