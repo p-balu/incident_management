@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import MainNav from "./mainNav";
 import { Redirect } from "react-router-dom";
+import axios from "axios";
 export default class Edit extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +23,11 @@ export default class Edit extends Component {
 
   fetchData = (id) => {
     this._isMounted = true;
-    fetch(`http://localhost:8080/api/incident/${id}`)
+    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+      "jwtToken"
+    );
+    axios
+      .get(`http://localhost:8080/api/incident/${id}`)
       .then((response) => response.json())
       .then((response) => {
         console.log(response.data.status);
@@ -59,13 +64,16 @@ export default class Edit extends Component {
     this.setState({
       submitted: true,
     });
-    console.log(this.state.users);
-    fetch(
-      `http://localhost:8080/api/incident/edit/${id}?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}`,
-      {
-        method: "PUT",
-      }
-    )
+    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+      "jwtToken"
+    );
+    axios
+      .put(
+        `http://localhost:8080/api/incident/edit/${id}?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}`,
+        {
+          method: "PUT",
+        }
+      )
       .then((res) => res.json())
       .then((res) => {
         if (res.code === 200) {
@@ -86,6 +94,25 @@ export default class Edit extends Component {
     return submitted === false ? (
       <>
         <MainNav />
+        <nav
+          aria-label="breadcrumb"
+          className="container"
+          style={{
+            marginTop: "3%",
+            paddingLeft: "0",
+            paddingRight: "0",
+          }}
+        >
+          {" "}
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <a href="/incidents">Incidents</a>
+            </li>
+            <li className="breadcrumb-item active" aria-current="page">
+              Edit Incident
+            </li>
+          </ol>
+        </nav>
         <div
           className="container"
           style={{

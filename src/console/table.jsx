@@ -14,6 +14,9 @@ export default function Table() {
   useEffect(() => {
     console.log("entered");
     if (refresh) {
+      axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+        "jwtToken"
+      );
       axios
         .get(`http://localhost:8080/api/incident`)
         .then((res) => {
@@ -29,6 +32,9 @@ export default function Table() {
   }, [refresh]);
 
   const handleDeleteClick = (incident_Id) => {
+    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+      "jwtToken"
+    );
     axios
       .delete(`http://localhost:8080/api/incident/delete/${incident_Id}`)
       .then((res) => {

@@ -1,29 +1,35 @@
 let mongoose = require("mongoose");
+let Schema = mongoose.Schema;
+let bcrypt = require("bcrypt-nodejs");
 
-//create model class for model
-let userModel = mongoose.Schema(
+let UserModel = new Schema(
   {
     name: {
       type: String,
-      required: "Name is required",
+      required: true,
+    },
+    username: {
+      type: String,
+      unique: true,
+      required: true,
     },
     email: {
       type: String,
-      required: "Email is required",
+      unique: true,
+      required: true,
     },
     password: {
       type: String,
-      required: "Password is required",
+      required: true,
     },
   },
-
   {
     collection: "users",
   }
 );
 
-userModel.pre("save", function (next) {
-  let user = this;
+UserModel.pre("save", function (next) {
+  var user = this;
   if (this.isModified("password") || this.isNew) {
     bcrypt.genSalt(10, function (err, salt) {
       if (err) {
@@ -42,8 +48,8 @@ userModel.pre("save", function (next) {
   }
 });
 
-userModel.methods.comparePassword = function (pass, cb) {
-  bcrypt.compare(pass, this.password, function (err, isMatch) {
+UserModel.methods.comparePassword = function (passw, cb) {
+  bcrypt.compare(passw, this.password, function (err, isMatch) {
     if (err) {
       return cb(err);
     }
@@ -51,4 +57,4 @@ userModel.methods.comparePassword = function (pass, cb) {
   });
 };
 
-module.exports = mongoose.model("User", userModel);
+module.exports = mongoose.model("User", UserModel);

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import MainNav from "./mainNav";
 import { Redirect } from "react-router-dom";
+import axios from "axios";
 
 export default class Add extends Component {
   constructor(props) {
@@ -25,14 +26,16 @@ export default class Add extends Component {
       errors: [],
       success: [],
     });
-
-    console.log("name", this.state.name);
-    fetch(
-      `http://localhost:8080/api/incident?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}`,
-      {
-        method: "POST",
-      }
-    )
+    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+      "jwtToken"
+    );
+    axios
+      .post(
+        `http://localhost:8080/api/incident?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}`,
+        {
+          method: "POST",
+        }
+      )
       .then((res) => res.json())
       .then((res) => {
         if (res.code === 200) {
@@ -54,13 +57,31 @@ export default class Add extends Component {
     return submitted === false ? (
       <>
         <MainNav />
+        <nav
+          aria-label="breadcrumb"
+          className="container"
+          style={{
+            marginTop: "3%",
+            paddingLeft: "0",
+            paddingRight: "0",
+          }}
+        >
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <a href="/incidents">Incidents</a>
+            </li>
+            <li className="breadcrumb-item active" aria-current="page">
+              Create Incident
+            </li>
+          </ol>
+        </nav>
         <div
           className="container"
           style={{
             background: "white",
             color: "black",
             padding: "3rem 2rem",
-            marginTop: "4%",
+            marginTop: "1%",
             borderRadius: "8px",
           }}
         >

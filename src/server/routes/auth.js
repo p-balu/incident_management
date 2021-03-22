@@ -8,23 +8,36 @@ let User = require("../models/user");
 
 //post request for register
 router.post("/register", function (req, res) {
-  if (!req.body.name || !req.body.email || !req.body.password) {
+  if (
+    !req.body.username ||
+    !req.body.name ||
+    !req.body.email ||
+    !req.body.password
+  ) {
+    console.log("no entries");
     res.json({
       success: false,
-      message: "Please provide name,email and password.",
+      msg: "Please enter email, username and password.",
     });
   } else {
-    var newUser = new User({
-      name: req.body.name,
-      email: req.body.email,
+    const newUser = new User({
+      username: req.body.username,
       password: req.body.password,
+      email: req.body.email,
+      name: req.body.name,
     });
-
     // save the user
-    newUser.save(function (err) {
+    User.create(newUser, (err) => {
+      console.log(" entries");
+
       if (err) {
-        return res.json({ success: false, msg: "Erro" });
+        console.log("err register entered");
+        return res.json({
+          success: false,
+          msg: "Username or email already exists.",
+        });
       }
+      console.log("success");
       res.json({ success: true, msg: "Successful created new user." });
     });
   }
@@ -32,9 +45,10 @@ router.post("/register", function (req, res) {
 
 //post request for login
 router.post("/login", function (req, res) {
+  console.log(req.body.username);
   User.findOne(
     {
-      email: req.body.email,
+      username: req.body.username,
     },
     function (err, user) {
       if (err) throw err;

@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
 import MainNav from "./mainNav";
-import Table from "./table";
 
 export default function Dashboard() {
   return (
@@ -22,13 +19,13 @@ export default function Dashboard() {
               Management
             </h2>
             <p>Having any technical issues? We are here to help you!</p>
-              <a
-                href="/incidents"
-                className="btn btn-primary btn-lg"
-                role="button"
-              >
-                Get Started
-              </a>
+            <a
+              href="/incidents"
+              className="btn btn-primary btn-lg"
+              role="button"
+            >
+              Get Started
+            </a>
           </div>
         </div>
         <img
