@@ -8,6 +8,7 @@ import Dashboard from "./dashboard";
 import Table from "./table";
 import Login from "./login";
 import Register from "./register";
+import Contact from "./contact";
 
 export default class App extends Component {
   render() {
@@ -18,6 +19,7 @@ export default class App extends Component {
           <Route exact path="/home" component={Dashboard} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
+          <Route exact path="/contact-us" component={Contact} />
           <Route exact path="/incidents" component={Table} />
           <Route path="/incidents/create" component={Add} />
           <Route path="/incidents/edit/:id" component={Edit} />

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import MainNav from "./mainNav";
+import { Link } from "react-router-dom";
+import FooterNav from "./footerNav";
 
 export default class Register extends Component {
   constructor() {
@@ -13,6 +15,7 @@ export default class Register extends Component {
       messages: "",
     };
   }
+
   handleChange = (e) => {
     const state = this.state;
     state[e.target.name] = e.target.value;
@@ -57,16 +60,24 @@ export default class Register extends Component {
           <form onSubmit={this.handleSubmit}>
             {messages !== "" && (
               <div
-                className="alert alert-danger alert-dismissible"
+                class="alert alert-warning alert-dismissible fade show"
                 role="alert"
               >
-                {messages}
+                <strong>{messages}</strong>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="alert"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
             )}
             <h2 className="display-5 my-4">Register</h2>
             <div className="form-group">
               <label htmlFor="name" className="sr-only">
-                Name
+                Name *
               </label>
               <input
                 type="text"
@@ -82,7 +93,7 @@ export default class Register extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="username" className="sr-only">
-                Usernmae
+                Username *
               </label>
               <input
                 type="text"
@@ -98,7 +109,7 @@ export default class Register extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="email" className="sr-only">
-                Email address
+                Email *
               </label>
               <input
                 type="email"
@@ -114,7 +125,7 @@ export default class Register extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="password" className="sr-only">
-                Password
+                Password *
               </label>
               <input
                 type="password"
@@ -134,8 +145,19 @@ export default class Register extends Component {
               className="btn btn-lg btn-primary btn-block"
               type="submit"
             />
+            <p>
+              Already a member?{" "}
+              <Link to="/login">
+                <span
+                  className="glyphicon glyphicon-plus-sign"
+                  aria-hidden="true"
+                ></span>{" "}
+                Login here
+              </Link>
+            </p>
           </form>
         </div>
+        <FooterNav />
       </>
     );
   }

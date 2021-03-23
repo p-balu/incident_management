@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import MainNav from "./mainNav";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import FooterNav from "./footerNav";
 
 export default class Add extends Component {
   constructor(props) {
@@ -174,6 +175,7 @@ export default class Add extends Component {
             </div>
           </form>
         </div>
+        <FooterNav />
       </>
     ) : (
       <Redirect to="/incidents" />

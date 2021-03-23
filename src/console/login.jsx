@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import MainNav from "./mainNav";
+import FooterNav from "./footerNav";
 
 export default class Login extends Component {
   constructor() {
@@ -47,10 +48,18 @@ export default class Login extends Component {
           <form onSubmit={this.handleSubmit}>
             {messages !== "" && (
               <div
-                className="alert alert-warning alert-dismissible"
+                class="alert alert-warning alert-dismissible fade show"
                 role="alert"
               >
-                {messages}
+                <strong>{messages}</strong>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="alert"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
             )}
             <h2 className="display-5 my-5">Please sign in</h2>
@@ -104,6 +113,7 @@ export default class Login extends Component {
             </p>
           </form>
         </div>
+        <FooterNav />
       </>
     );
   }

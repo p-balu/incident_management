@@ -9,8 +9,6 @@ export default class MainNav extends Component {
   };
 
   render() {
-    console.log(localStorage.getItem("jwtToken"));
-
     return (
       <nav
         className="navbar navbar-expand-lg navbar-dark"
@@ -46,6 +44,20 @@ export default class MainNav extends Component {
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <NavLink
+                className="nav-link"
+                activeStyle={{
+                  borderBottom: "3px solid #ffb700",
+                  fontWeight: "600",
+                }}
+                to="/home"
+              >
+                {" "}
+                Home{" "}
+              </NavLink>
+            </li>
+
             {localStorage.getItem("jwtToken") !== null ? (
               <button class="btn btn-primary" onClick={this.handleLogout}>
                 Logout
@@ -87,7 +99,7 @@ export default class MainNav extends Component {
                   borderBottom: "3px solid #ffb700",
                   fontWeight: "600",
                 }}
-                to="/contact"
+                to="/contact-us"
               >
                 {" "}
                 Contact{" "}

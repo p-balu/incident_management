@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import FooterNav from "./footerNav";
 import MainNav from "./mainNav";
 
 export default function Dashboard() {
@@ -19,11 +20,7 @@ export default function Dashboard() {
               Management
             </h2>
             <p>Having any technical issues? We are here to help you!</p>
-            <a
-              href="/incidents"
-              className="btn btn-primary btn-lg"
-              role="button"
-            >
+            <a href="/login" className="btn btn-primary btn-lg" role="button">
               Get Started
             </a>
           </div>
@@ -35,11 +32,7 @@ export default function Dashboard() {
           alt=""
         />
       </main>
-      {/* {incidents &&
-          <Table
-            incidents={incidents}
-          />
-        } */}
+      <FooterNav />
     </>
   );
 }

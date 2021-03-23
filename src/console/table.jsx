@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import FooterNav from "./footerNav";
 import MainNav from "./mainNav";
 
 export default function Table() {
@@ -133,6 +134,7 @@ export default function Table() {
           </tbody>
         </table>
       </div>
+      <FooterNav />
     </>
   );
 }
