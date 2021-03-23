@@ -3,6 +3,7 @@ let router = express.Router();
 let passport = require("passport");
 require("../config/passport")(passport);
 let Incident = require("../models/incidents");
+let ContactMe = require("../models/contacts");
 
 router.get(
   "/",
@@ -11,6 +12,30 @@ router.get(
     res.send("Hello from API server");
   }
 );
+
+/* Post Contact page and redirect to home page */
+router.post("/contact", (req, res, next) => {
+  let newContact = ContactMe({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    mobile: req.body.mobile,
+    description: req.body.description,
+  });
+
+  ContactMe.create(newContact, (err, Contact) => {
+    if (err) {
+      console.log(err);
+      res.end(err);
+    } else {
+      res.json({
+        code: "200",
+        data: Contact,
+        message: "Contact added successfully",
+      });
+    }
+  });
+});
 
 /* Get all Incidents from incidents collection*/
 router.get(
