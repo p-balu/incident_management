@@ -5,13 +5,13 @@ require("../config/passport")(passport);
 let Incident = require("../models/incidents");
 let ContactMe = require("../models/contacts");
 
-router.get(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  function (req, res, next) {
-    res.send("Hello from API server");
-  }
-);
+// router.get(
+//   "/",
+//   passport.authenticate("jwt", { session: false }),
+//   function (req, res, next) {
+//     res.send("Hello from API server");
+//   }
+// );
 
 /* Post Contact page and redirect to home page */
 router.post("/contact", (req, res, next) => {
@@ -42,18 +42,23 @@ router.get(
   "/incident",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    Incident.find(function (err, IncidentList) {
-      if (err) {
-        return console.log(err);
-      } else {
-        //on success
-        res.json({
-          code: "200",
-          data: IncidentList,
-          message: "Incidents fetched successfully",
-        });
-      }
-    });
+    var token = getToken(req.headers);
+    if (token) {
+      Incident.find(function (err, IncidentList) {
+        if (err) {
+          return console.log(err);
+        } else {
+          //on success
+          res.json({
+            code: "200",
+            data: IncidentList,
+            message: "Incidents fetched successfully",
+          });
+        }
+      });
+    } else {
+      return res.status(403).send({ success: false, msg: "Unauthorized." });
+    }
   }
 );
 
@@ -62,27 +67,32 @@ router.get(
   "/incident/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    let id = req.params.id;
-    console.log(id);
-    Incident.findById(id, (err, IncidentList) => {
-      console.log(IncidentList);
-      if (err) {
-        console.log(err);
-        res.end(err);
-      } else if (IncidentList === undefined || IncidentList === null) {
-        res.json({
-          code: "304",
-          message: "Incident not found",
-        });
-      } else {
-        //on success
-        res.json({
-          code: "200",
-          data: IncidentList,
-          message: "Incident fetched successfully",
-        });
-      }
-    });
+    var token = getToken(req.headers);
+    if (token) {
+      let id = req.params.id;
+      console.log(id);
+      Incident.findById(id, (err, IncidentList) => {
+        console.log(IncidentList);
+        if (err) {
+          console.log(err);
+          res.end(err);
+        } else if (IncidentList === undefined || IncidentList === null) {
+          res.json({
+            code: "304",
+            message: "Incident not found",
+          });
+        } else {
+          //on success
+          res.json({
+            code: "200",
+            data: IncidentList,
+            message: "Incident fetched successfully",
+          });
+        }
+      });
+    } else {
+      return res.status(403).send({ success: false, msg: "Unauthorized." });
+    }
   }
 );
 
@@ -91,31 +101,36 @@ router.post(
   "/incident",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    console.log("entered");
-    console.log(req.query);
+    var token = getToken(req.headers);
+    if (token) {
+      console.log("entered");
+      console.log(req.query);
 
-    let newIncident = Incident({
-      name: req.query.name,
-      email: req.query.email,
-      issueType: req.query.issueType,
-      status: req.query.status,
-      description: req.query.description,
-      priority: req.query.priority,
-    });
+      let newIncident = Incident({
+        name: req.query.name,
+        email: req.query.email,
+        issueType: req.query.issueType,
+        status: req.query.status,
+        description: req.query.description,
+        priority: req.query.priority,
+      });
 
-    Incident.create(newIncident, (err, IncidentList) => {
-      if (err) {
-        console.log(err);
-        res.end(err);
-      } else {
-        //on success
-        res.json({
-          code: "200",
-          data: IncidentList,
-          message: "Incident created successfully",
-        });
-      }
-    });
+      Incident.create(newIncident, (err, IncidentList) => {
+        if (err) {
+          console.log(err);
+          res.end(err);
+        } else {
+          //on success
+          res.json({
+            code: "200",
+            data: IncidentList,
+            message: "Incident created successfully",
+          });
+        }
+      });
+    } else {
+      return res.status(403).send({ success: false, msg: "Unauthorized." });
+    }
   }
 );
 
@@ -124,34 +139,39 @@ router.put(
   "/incident/edit/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    console.log("update entered");
-    console.log(req.query);
-    let id = req.params.id;
-    console.log(id);
+    var token = getToken(req.headers);
+    if (token) {
+      console.log("update entered");
+      console.log(req.query);
+      let id = req.params.id;
+      console.log(id);
 
-    let updateIncident = Incident({
-      _id: req.params.id,
-      name: req.query.name,
-      status: req.query.status,
-      email: req.query.email,
-      priority: req.query.priority,
-      issueType: req.query.issueType,
-    });
+      let updateIncident = Incident({
+        _id: req.params.id,
+        name: req.query.name,
+        status: req.query.status,
+        email: req.query.email,
+        priority: req.query.priority,
+        issueType: req.query.issueType,
+      });
 
-    Incident.updateOne({ _id: id }, updateIncident, (err) => {
-      console.log("test loop", id);
-      if (err) {
-        console.log(err);
-        res.end(err);
-      } else {
-        console.log("success");
-        //on success
-        res.json({
-          code: "200",
-          message: "Incident updated successfully",
-        });
-      }
-    });
+      Incident.updateOne({ _id: id }, updateIncident, (err) => {
+        console.log("test loop", id);
+        if (err) {
+          console.log(err);
+          res.end(err);
+        } else {
+          console.log("success");
+          //on success
+          res.json({
+            code: "200",
+            message: "Incident updated successfully",
+          });
+        }
+      });
+    } else {
+      return res.status(403).send({ success: false, msg: "Unauthorized." });
+    }
   }
 );
 
@@ -160,21 +180,39 @@ router.delete(
   "/incident/delete/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    console.log("delete entered");
-    let id = req.params.id;
+    var token = getToken(req.headers);
+    if (token) {
+      console.log("delete entered");
+      let id = req.params.id;
 
-    Incident.deleteOne({ _id: id }, (err) => {
-      if (err) {
-        console.log(err);
-        res.end(err);
-      } else {
-        //on success
-        res.json({
-          code: "200",
-          message: "Incident deleted successfully",
-        });
-      }
-    });
+      Incident.deleteOne({ _id: id }, (err) => {
+        if (err) {
+          console.log(err);
+          res.end(err);
+        } else {
+          //on success
+          res.json({
+            code: "200",
+            message: "Incident deleted successfully",
+          });
+        }
+      });
+    } else {
+      return res.status(403).send({ success: false, msg: "Unauthorized." });
+    }
   }
 );
+
+getToken = function (headers) {
+  if (headers && headers.authorization) {
+    var parted = headers.authorization.split(" ");
+    if (parted.length === 2) {
+      return parted[1];
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+};
 module.exports = router;

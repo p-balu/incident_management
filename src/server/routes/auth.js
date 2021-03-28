@@ -44,7 +44,7 @@ router.post("/register", function (req, res) {
 });
 
 //post request for login
-router.post("/login", function (req, res) {
+router.post("/login", (req, res) => {
   console.log(req.body.username);
   User.findOne(
     {
@@ -64,7 +64,7 @@ router.post("/login", function (req, res) {
           if (isMatch && !err) {
             // if user is found and password is correct
             let token = jwt.sign(user.toJSON(), settings.secret);
-            res.json({ success: true, token: "JWT " + token });
+            return res.json({ success: true, token: "JWT " + token });
           } else {
             res.status(401).send({
               success: false,
