@@ -28,7 +28,7 @@ export default class Login extends Component {
       .then((result) => {
         localStorage.setItem("jwtToken", result.data.token);
         this.setState({ message: "" });
-        this.props.history.push("/");
+        this.props.history.push("/incidents");
       })
       .catch((error) => {
         if (error.response.status === 401) {
@@ -54,7 +54,7 @@ export default class Login extends Component {
                 <strong>{messages}</strong>
                 <button
                   type="button"
-                  class="close"
+                  className="close"
                   data-dismiss="alert"
                   aria-label="Close"
                 >

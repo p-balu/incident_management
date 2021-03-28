@@ -20,6 +20,14 @@ export default class Add extends Component {
     };
   }
 
+  componentDidMount = () => {
+    this._isMounted = true;
+  };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({
@@ -27,29 +35,30 @@ export default class Add extends Component {
       errors: [],
       success: [],
     });
-    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-      "jwtToken"
-    );
-    axios
-      .post(
-        `http://localhost:8080/api/incident?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}`,
-        {
-          method: "POST",
-        }
-      )
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.code === 200) {
-          this.setState({
-            success: "Added Success:)",
-            submitted: true,
-          });
-        } else {
-          this.setState({
-            errors: "Error",
-          });
-        }
-      });
+    if (this._isMounted) {
+      axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+        "jwtToken"
+      );
+      axios
+        .post(
+          `http://localhost:8080/api/incident?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}`,
+          {
+            method: "POST",
+          }
+        )
+        .then((res) => {
+          if (res.code === 200) {
+            this.setState({
+              success: "Added Success:)",
+              submitted: true,
+            });
+          } else {
+            this.setState({
+              errors: "Error",
+            });
+          }
+        });
+    }
   };
 
   render() {

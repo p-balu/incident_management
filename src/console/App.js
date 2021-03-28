@@ -9,6 +9,7 @@ import Table from "./table";
 import Login from "./login";
 import Register from "./register";
 import Contact from "./contact";
+import PrivateHOC from "./hoc/privateRoutes";
 
 export default class App extends Component {
   render() {
@@ -16,13 +17,13 @@ export default class App extends Component {
       <Router>
         <Switch>
           <Route exact path="/" component={Dashboard} />
-          <Route exact path="/home" component={Dashboard} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/contact-us" component={Contact} />
-          <Route exact path="/incidents" component={Table} />
-          <Route path="/incidents/create" component={Add} />
-          <Route path="/incidents/edit/:id" component={Edit} />
+          <Route path="/home" component={Dashboard} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/contact-us" component={Contact} />
+          <PrivateHOC exact path="/incidents" component={Table} />
+          <PrivateHOC path="/incidents/create" component={Add} />
+          <PrivateHOC path="/incidents/edit/:id" component={Edit} />
         </Switch>
       </Router>
     );

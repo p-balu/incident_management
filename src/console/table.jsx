@@ -52,7 +52,6 @@ export default function Table() {
   return (
     <>
       <MainNav />
-
       <div className="container" style={{ marginTop: "4%" }}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <h1>Incidents</h1>
@@ -100,7 +99,7 @@ export default function Table() {
               </tr>
             ) : (
               incidents.map((incident, id) => (
-                <tr key={{ id }}>
+                <tr key={id}>
                   <td>{id + 1}</td>
                   <td>{incident.name}</td>
                   <td>{incident.issueType}</td>

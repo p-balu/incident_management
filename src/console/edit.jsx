@@ -19,44 +19,45 @@ export default class Edit extends Component {
 
   componentDidMount = () => {
     const id = this.props.match.params.id;
+    this._isMounted = true;
     this.fetchData(id);
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   fetchData = (id) => {
     this._isMounted = true;
     axios.defaults.headers.common["Authorization"] = localStorage.getItem(
       "jwtToken"
     );
-    axios
-      .get(`http://localhost:8080/api/incident/${id}`)
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response.data.status);
-        if (this._isMounted) {
-          if (response.data !== undefined) {
+    axios.get(`http://localhost:8080/api/incident/${id}`).then((response) => {
+      if (this._isMounted) {
+        if (response.data.data !== undefined) {
+          this.setState({
+            name: response.data.data.name,
+            email: response.data.data.email,
+            issueType: response.data.data.issueType,
+            description: response.data.data.description,
+            priority: response.data.data.priority,
+          });
+          if (this.state.published === "Yes") {
             this.setState({
-              name: response.data.name,
-              email: response.data.email,
-              issueType: response.data.issueType,
-              description: response.data.description,
-              priority: response.data.priority,
+              checked: true,
             });
-            if (this.state.published === "Yes") {
-              this.setState({
-                checked: true,
-              });
-            } else {
-              this.setState({
-                checked: false,
-              });
-            }
           } else {
             this.setState({
-              redirect: true,
+              checked: false,
             });
           }
+        } else {
+          this.setState({
+            redirect: true,
+          });
         }
-      });
+      }
+    });
   };
 
   handleSubmit = (event) => {
@@ -65,29 +66,30 @@ export default class Edit extends Component {
     this.setState({
       submitted: true,
     });
-    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-      "jwtToken"
-    );
-    axios
-      .put(
-        `http://localhost:8080/api/incident/edit/${id}?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}`,
-        {
-          method: "PUT",
-        }
-      )
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.code === 200) {
-          this.setState({
-            success: "Edit Success:)",
-            submitted: true,
-          });
-        } else {
-          this.setState({
-            errors: "Error",
-          });
-        }
-      });
+    if (this._isMounted) {
+      axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+        "jwtToken"
+      );
+      axios
+        .put(
+          `http://localhost:8080/api/incident/edit/${id}?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}`,
+          {
+            method: "PUT",
+          }
+        )
+        .then((res) => {
+          if (res.code === 200) {
+            this.setState({
+              success: "Edit Success:)",
+              submitted: true,
+            });
+          } else {
+            this.setState({
+              errors: "Error",
+            });
+          }
+        });
+    }
   };
 
   render() {
@@ -201,7 +203,7 @@ export default class Edit extends Component {
             </div>
             <div style={{ display: "flex" }}>
               <button type="submit" className="btn btn-primary">
-                Submit
+                Update
               </button>
               <a
                 className="btn btn-warning"

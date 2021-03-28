@@ -3,11 +3,10 @@ import { NavLink } from "react-router-dom";
 import Image from "./images/teamLogo.png";
 
 export default class MainNav extends Component {
-  handleLogout = () => {
-    localStorage.removeItem("jwtToken");
-    window.location.reload();
-  };
-
+  // handleLogout = (e) => {
+  //   e.preventDefault();
+  //   localStorage.removeItem("jwtToken");
+  // };
   render() {
     return (
       <nav
@@ -57,11 +56,48 @@ export default class MainNav extends Component {
                 Home{" "}
               </NavLink>
             </li>
-
+            <li className="nav-item">
+              <NavLink
+                className="nav-link"
+                activeStyle={{
+                  borderBottom: "3px solid #ffb700",
+                  fontWeight: "600",
+                }}
+                to="/contact-us"
+              >
+                {" "}
+                Contact{" "}
+              </NavLink>
+            </li>
             {localStorage.getItem("jwtToken") !== null ? (
-              <button class="btn btn-primary" onClick={this.handleLogout}>
-                Logout
-              </button>
+              <>
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link"
+                    activeStyle={{
+                      borderBottom: "3px solid #ffb700",
+                      fontWeight: "600",
+                    }}
+                    to="/incidents"
+                  >
+                    {" "}
+                    Incidents{" "}
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <a
+                    href="/login"
+                    className="nav-link"
+                    style={{
+                      backgroundColor: "rgba(17, 24, 39)",
+                      border: "none",
+                    }}
+                    onClick={() => localStorage.removeItem("jwtToken")}
+                  >
+                    Logout
+                  </a>
+                </li>
+              </>
             ) : (
               <>
                 <li className="nav-item">
@@ -92,19 +128,6 @@ export default class MainNav extends Component {
                 </li>
               </>
             )}
-            <li className="nav-item">
-              <NavLink
-                className="nav-link"
-                activeStyle={{
-                  borderBottom: "3px solid #ffb700",
-                  fontWeight: "600",
-                }}
-                to="/contact-us"
-              >
-                {" "}
-                Contact{" "}
-              </NavLink>
-            </li>
           </ul>
         </div>
       </nav>
