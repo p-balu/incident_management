@@ -46,6 +46,7 @@ export default class Edit extends Component {
             description: data.description,
             priority: data.priority,
             role: data.role,
+            status: data.status,
           });
         } else {
           this.setState({
@@ -63,12 +64,14 @@ export default class Edit extends Component {
       submitted: true,
     });
     if (this._isMounted) {
+      const userId = localStorage.getItem("userId");
+      console.log("edit test", userId);
       axios.defaults.headers.common["Authorization"] = localStorage.getItem(
         "jwtToken"
       );
       axios
         .put(
-          `http://localhost:8080/api/incident/edit/${id}?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}`,
+          `http://localhost:8080/api/incident/edit/${id}?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}&status=${this.state.status}`,
           {
             method: "PUT",
           }
@@ -184,7 +187,7 @@ export default class Edit extends Component {
               </select>
             </div>
 
-            {this.state.role === "admin" && (
+            {localStorage.getItem("role") === "admin" && (
               <div className="form-group">
                 <label htmlFor="priority">Status</label>
                 <select
@@ -192,7 +195,7 @@ export default class Edit extends Component {
                   id="priority"
                   value={this.state.status}
                   onChange={(event) =>
-                    this.setState({ priority: event.target.value })
+                    this.setState({ status: event.target.value })
                   }
                 >
                   <option value="">Select Status</option>

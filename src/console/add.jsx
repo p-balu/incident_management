@@ -12,6 +12,7 @@ export default class Add extends Component {
       issueType: "",
       email: "",
       priority: "",
+      status: "pending",
       description: "",
       incidents: [],
       erros: [],
@@ -36,12 +37,14 @@ export default class Add extends Component {
       success: [],
     });
     if (this._isMounted) {
+      const userId = localStorage.getItem("userId");
+      console.log("testing add", userId);
       axios.defaults.headers.common["Authorization"] = localStorage.getItem(
         "jwtToken"
       );
       axios
         .post(
-          `http://localhost:8080/api/incident?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}`,
+          `http://localhost:8080/api/incident?userId=${userId}&name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}&status=${this.state.status}`,
           {
             method: "POST",
           }

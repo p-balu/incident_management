@@ -64,7 +64,12 @@ router.post("/login", (req, res) => {
           if (isMatch && !err) {
             // if user is found and password is correct
             let token = jwt.sign(user.toJSON(), settings.secret);
-            return res.json({ success: true, token: "JWT " + token });
+            return res.json({
+              success: true,
+              token: "JWT " + token,
+              role: user.role,
+              id: user._id,
+            });
           } else {
             res.status(401).send({
               success: false,

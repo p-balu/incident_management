@@ -6,6 +6,8 @@ let Incident = require("../models/incidents");
 let ContactMe = require("../models/contacts");
 
 router.get("/", function (req, res, next) {
+  console.log("testing", req.user);
+
   res.send("Hello from Express API server");
 });
 
@@ -38,7 +40,7 @@ router.get(
   "/incidents",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    let token = getToken(req.headers);
+    var token = getToken(req.headers);
     if (token) {
       Incident.find(function (err, IncidentList) {
         if (err) {
@@ -63,7 +65,7 @@ router.get(
   "/incident/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    let token = getToken(req.headers);
+    var token = getToken(req.headers);
     if (token) {
       let id = req.params.id;
       console.log(id);
@@ -97,13 +99,10 @@ router.post(
   "/incident",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    let token = getToken(req.headers);
+    var token = getToken(req.headers);
     if (token) {
-      console.log("entered");
-      console.log(req.query);
-
       let newIncident = Incident({
-        userId: req.user._id,
+        userId: req.query.userId,
         name: req.query.name,
         email: req.query.email,
         issueType: req.query.issueType,
@@ -136,7 +135,7 @@ router.put(
   "/incident/edit/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    let token = getToken(req.headers);
+    var token = getToken(req.headers);
     if (token) {
       console.log("update entered");
       console.log(req.query);
@@ -144,7 +143,6 @@ router.put(
       console.log(id);
 
       let updateIncident = Incident({
-        userId: req.user._id,
         _id: req.params.id,
         name: req.query.name,
         status: req.query.status,
@@ -178,7 +176,7 @@ router.delete(
   "/incident/delete/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    let token = getToken(req.headers);
+    var token = getToken(req.headers);
     if (token) {
       console.log("delete entered");
       let id = req.params.id;
@@ -195,23 +193,6 @@ router.delete(
           });
         }
       });
-    } else {
-      return res.status(401).send({ success: false, msg: "Unauthorized." });
-    }
-  }
-);
-
-router.get(
-  "/authenticated",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    let token = getToken(req.headers);
-    if (token) {
-      console.log("authenticate entered");
-      const { _id, username, role } = req.user;
-      res
-        .status(200)
-        .json({ isAuthenticated: true, user: { username, role, _id } });
     } else {
       return res.status(401).send({ success: false, msg: "Unauthorized." });
     }

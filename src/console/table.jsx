@@ -6,13 +6,8 @@ import { Link } from "react-router-dom";
 import FooterNav from "./footerNav";
 import MainNav from "./mainNav";
 import { titleCase } from "title-case";
-import { AuthContext } from "./context/AuthContext";
 
 export default function Table() {
-  const { isAuthenticated, user, setUser, setIsAuthenticated } = useContext(
-    AuthContext
-  );
-
   const [success, setSuccess] = useState("");
   const [errors, setErrors] = useState("");
   const [refresh, setRefresh] = useState(true);
@@ -27,12 +22,13 @@ export default function Table() {
         .get(`http://localhost:8080/api/incidents`)
         .then((res) => {
           const incidents = res.data.data;
-          if (user.role === "admin") {
+          if (localStorage.getItem("role") === "admin") {
             setIncidents(incidents);
           } else {
             let incident = [];
+            let userId = localStorage.getItem("userId");
             for (let i = 0; i < incidents.length; i++) {
-              if (user._id === incidents[i].userId) {
+              if (userId === incidents[i].userId) {
                 incident.push(incidents[i]);
               }
               setIncidents(incident);

@@ -3,10 +3,6 @@ import { NavLink } from "react-router-dom";
 import Image from "./images/teamLogo.png";
 
 export default class MainNav extends Component {
-  // handleLogout = (e) => {
-  //   e.preventDefault();
-  //   localStorage.removeItem("jwtToken");
-  // };
   render() {
     return (
       <nav
@@ -92,7 +88,11 @@ export default class MainNav extends Component {
                       backgroundColor: "rgba(17, 24, 39)",
                       border: "none",
                     }}
-                    onClick={() => localStorage.removeItem("jwtToken")}
+                    onClick={() => {
+                      localStorage.removeItem("jwtToken");
+                      localStorage.setItem("role", "");
+                      localStorage.setItem("userId", "");
+                    }}
                   >
                     Logout
                   </a>

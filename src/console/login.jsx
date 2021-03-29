@@ -27,11 +27,13 @@ export default class Login extends Component {
       .post("http://localhost:8080/api/auth/login", { username, password })
       .then((result) => {
         localStorage.setItem("jwtToken", result.data.token);
+        localStorage.setItem("role", result.data.role);
+        localStorage.setItem("userId", result.data.id);
         this.setState({ message: "" });
         this.props.history.push("/incidents");
       })
       .catch((error) => {
-        if (error.response.status === 401) {
+        if (error.response.status === 401 || error.status === 500) {
           this.setState({
             messages: "Login failed. username or password not match",
           });
@@ -48,7 +50,7 @@ export default class Login extends Component {
           <form onSubmit={this.handleSubmit}>
             {messages !== "" && (
               <div
-                class="alert alert-warning alert-dismissible fade show"
+                className="alert alert-warning alert-dismissible fade show"
                 role="alert"
               >
                 <strong>{messages}</strong>
