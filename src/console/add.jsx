@@ -112,6 +112,7 @@ export default class Add extends Component {
                 }
                 name="name"
                 id="name"
+                required
               />
             </div>
             <div className="form-group">
@@ -126,6 +127,7 @@ export default class Add extends Component {
                 }
                 name="email"
                 id="email"
+                required
               />
             </div>
             <div className="form-group">
@@ -140,6 +142,7 @@ export default class Add extends Component {
                 }
                 name="issueType"
                 id="issueType"
+                required
               />
             </div>
 
@@ -152,6 +155,7 @@ export default class Add extends Component {
                 onChange={(event) =>
                   this.setState({ priority: event.target.value })
                 }
+                required
               >
                 <option value="">Select Priority</option>
                 <option value="high">High</option>
@@ -171,6 +175,7 @@ export default class Add extends Component {
                 onChange={(event) =>
                   this.setState({ description: event.target.value })
                 }
+                required
               ></textarea>
             </div>
             <div style={{ display: "flex" }}>
