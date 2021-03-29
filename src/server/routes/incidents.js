@@ -199,6 +199,27 @@ router.delete(
   }
 );
 
+router.get(
+  "/authenticated",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let token = getToken(req.headers);
+    if (token) {
+      console.log("authentication entered");
+      const _id = req.user.id;
+      const username = req.user.username;
+      const role = req.user.role;
+      console.log(req.user);
+      res.status(200).json({
+        isAuthenticated: true,
+        user: { username: username, role: role, _id: _id },
+      });
+    } else {
+      return res.status(401).send({ success: false, msg: "Unauthorized." });
+    }
+  }
+);
+
 getToken = function (headers) {
   if (headers && headers.authorization) {
     let parted = headers.authorization.split(" ");
