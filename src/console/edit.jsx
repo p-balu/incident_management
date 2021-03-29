@@ -3,6 +3,7 @@ import MainNav from "./mainNav";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 import FooterNav from "./footerNav";
+import user from "../server/models/user";
 export default class Edit extends Component {
   constructor(props) {
     super(props);
@@ -14,6 +15,8 @@ export default class Edit extends Component {
       description: "",
       submitted: false,
       success: "",
+      role: "",
+      status: "",
     };
   }
 
@@ -35,22 +38,15 @@ export default class Edit extends Component {
     axios.get(`http://localhost:8080/api/incident/${id}`).then((response) => {
       if (this._isMounted) {
         if (response.data.data !== undefined) {
+          const data = response.data.data;
           this.setState({
-            name: response.data.data.name,
-            email: response.data.data.email,
-            issueType: response.data.data.issueType,
-            description: response.data.data.description,
-            priority: response.data.data.priority,
+            name: data.name,
+            email: data.email,
+            issueType: data.issueType,
+            description: data.description,
+            priority: data.priority,
+            role: data.role,
           });
-          if (this.state.published === "Yes") {
-            this.setState({
-              checked: true,
-            });
-          } else {
-            this.setState({
-              checked: false,
-            });
-          }
         } else {
           this.setState({
             redirect: true,
@@ -187,6 +183,26 @@ export default class Edit extends Component {
                 <option value="low">Low</option>
               </select>
             </div>
+
+            {this.state.role === "admin" && (
+              <div className="form-group">
+                <label htmlFor="priority">Status</label>
+                <select
+                  className="form-control"
+                  id="priority"
+                  value={this.state.status}
+                  onChange={(event) =>
+                    this.setState({ priority: event.target.value })
+                  }
+                >
+                  <option value="">Select Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </div>
+            )}
 
             <div className="form-group">
               <label htmlFor="description">Description</label>

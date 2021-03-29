@@ -1,29 +1,43 @@
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FooterNav from "./footerNav";
 import MainNav from "./mainNav";
+import { titleCase } from "title-case";
+import { AuthContext } from "./context/AuthContext";
 
 export default function Table() {
+  const { isAuthenticated, user, setUser, setIsAuthenticated } = useContext(
+    AuthContext
+  );
+
   const [success, setSuccess] = useState("");
   const [errors, setErrors] = useState("");
   const [refresh, setRefresh] = useState(true);
   const [incidents, setIncidents] = useState([]);
 
   useEffect(() => {
-    console.log("entered");
     if (refresh) {
       axios.defaults.headers.common["Authorization"] = localStorage.getItem(
         "jwtToken"
       );
       axios
-        .get(`http://localhost:8080/api/incident`)
+        .get(`http://localhost:8080/api/incidents`)
         .then((res) => {
-          console.log(res.data.data);
           const incidents = res.data.data;
-          setIncidents(incidents);
+          if (user.role === "admin") {
+            setIncidents(incidents);
+          } else {
+            let incident = [];
+            for (let i = 0; i < incidents.length; i++) {
+              if (user._id === incidents[i].userId) {
+                incident.push(incidents[i]);
+              }
+              setIncidents(incident);
+            }
+          }
           setRefresh(false);
         })
         .catch((error) => {
@@ -84,7 +98,7 @@ export default function Table() {
             </tr>
           </thead>
           <tbody>
-            {incidents.length === 0 ? (
+            {incidents.length === 0 || incidents === undefined ? (
               <tr>
                 <td
                   colSpan="6"
@@ -101,10 +115,56 @@ export default function Table() {
               incidents.map((incident, id) => (
                 <tr key={id}>
                   <td>{id + 1}</td>
-                  <td>{incident.name}</td>
-                  <td>{incident.issueType}</td>
-                  <td>{incident.status}</td>
-                  <td>{incident.priority}</td>
+                  <td>{titleCase(incident.name)}</td>
+                  <td>{titleCase(incident.issueType)}</td>
+                  <td>
+                    {incident.status === "pending" && (
+                      <span
+                        className="tableSpan"
+                        style={{
+                          backgroundColor: "rgba(254, 226, 226)",
+                          color: "rgba(153, 27, 27)",
+                        }}
+                      >
+                        {incident.status}
+                      </span>
+                    )}
+                    {incident.status === "in_progress" && (
+                      <span
+                        className="tableSpan"
+                        style={{
+                          backgroundColor: "rgba(254, 243, 199)",
+                          color: "rgba(146, 64, 14)",
+                        }}
+                      >
+                        {incident.status}
+                      </span>
+                    )}
+
+                    {incident.status === "completed" && (
+                      <span
+                        className="tableSpan"
+                        style={{
+                          backgroundColor: "rgba(209, 250, 229)",
+                          color: "rgba(6, 95, 70)",
+                        }}
+                      >
+                        {incident.status}
+                      </span>
+                    )}
+                    {incident.status === "closed" && (
+                      <span
+                        className="tableSpan"
+                        style={{
+                          backgroundColor: "rgba(224, 231, 255)",
+                          color: "rgba(55, 48, 163)",
+                        }}
+                      >
+                        {incident.status}
+                      </span>
+                    )}
+                  </td>
+                  <td>{titleCase(incident.priority)}</td>
                   <td>
                     <Link
                       to={`/incidents/edit/${incident._id}`}

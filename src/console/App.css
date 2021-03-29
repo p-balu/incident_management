@@ -53,3 +53,11 @@
 .textContainer {
   margin-left: 15%;
 }
+.tableSpan {
+  padding: 2px 12px;
+  font-weight: 600;
+  display: inline-flex;
+  border: none;
+  border-radius: 8px;
+  text-transform: uppercase;
+}

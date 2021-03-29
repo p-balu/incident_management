@@ -26,7 +26,7 @@ export default function Dashboard() {
           </div>
         </div>
         <img
-          class="image-fluid"
+          className="image-fluid"
           style={{ marginLeft: "4.75rem" }}
           src="https://tailwindui.com/img/component-images/cloud-illustration-indigo-400.svg"
           alt=""

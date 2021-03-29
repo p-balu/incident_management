@@ -3,21 +3,25 @@ let mongoose = require("mongoose");
 //create model class for incidents
 let incidentModel = mongoose.Schema(
   {
+    userId: {
+      type: String,
+      required: true,
+    },
     name: {
       type: String,
-      required: "Name is required",
+      required: true,
     },
     email: {
       type: String,
-      required: "Email is required",
+      required: true,
     },
     issueType: {
       type: String,
-      required: "Type of Issue is required",
+      required: true,
     },
     description: {
       type: String,
-      required: "Description is required",
+      required: true,
     },
     status: {
       type: String,
