@@ -10,6 +10,7 @@ import Login from "./login";
 import Register from "./register";
 import Contact from "./contact";
 import PrivateHOC from "./hoc/privateRoutes";
+import PublicHOC from "./hoc/publicRoutes";
 
 export default class App extends Component {
   render() {
@@ -18,8 +19,8 @@ export default class App extends Component {
         <Switch>
           <Route exact path="/" component={Dashboard} />
           <Route path="/home" component={Dashboard} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
+          <PublicHOC path="/login" component={Login} />
+          <PublicHOC path="/register" component={Register} />
           <Route path="/contact-us" component={Contact} />
           <PrivateHOC exact path="/incidents" component={Table} />
           <PrivateHOC path="/incidents/create" component={Add} />
