@@ -40,13 +40,13 @@ app.use("/api", incidentsRouter);
 app.use("/api/auth", auth);
 
 if (process.env.NODE_ENV === "production") {
-  console.log("env production entered on success");
   app.use(express.static("client/build"));
+
   app.get("*", (req, res) => {
-    console.log("respnse entered")
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+    res.sendFile(path.join(__dirname, "client", "build", "index.html")); // relative path
   });
 }
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
