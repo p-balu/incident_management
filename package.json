@@ -4,7 +4,8 @@
   "description": "Incident Mangement Backend",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "heroku-postbuild":"cd client && npm install && npm run build"
   },
   "engine": {
     "node": "^14.15.4",
