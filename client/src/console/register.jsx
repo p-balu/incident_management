@@ -28,7 +28,7 @@ export default class Register extends Component {
     const { name, email, password, username, messages } = this.state;
 
     axios
-      .post("http://localhost:8080/api/auth/register", {
+      .post("/api/auth/register", {
         name,
         email,
         username,

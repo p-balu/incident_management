@@ -1,7 +1,7 @@
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import FooterNav from "./footerNav";
 import MainNav from "./mainNav";
@@ -13,51 +13,56 @@ export default function Table() {
   const [errors, setErrors] = useState("");
   const [refresh, setRefresh] = useState(true);
   const [incidents, setIncidents] = useState([]);
+  const isMountedRef = useRef(null);
+
+  console.log("test", refresh);
 
   useEffect(() => {
+    let mounted = true;
     if (refresh) {
       axios.defaults.headers.common["Authorization"] = localStorage.getItem(
         "jwtToken"
       );
       axios
-        .get(`http://localhost:8080/api/incidents`)
+        .get(`/api/incidents`)
         .then((res) => {
           const incidents = res.data.data;
-          if (localStorage.getItem("role") === "admin") {
-            setIncidents(incidents);
-          } else {
-            let incident = [];
-            let userId = localStorage.getItem("userId");
-            for (let i = 0; i < incidents.length; i++) {
-              if (userId === incidents[i].userId) {
-                incident.push(incidents[i]);
+          if (mounted) {
+            if (localStorage.getItem("role") === "admin") {
+              setIncidents(incidents);
+            } else {
+              let incident = [];
+              let userId = localStorage.getItem("userId");
+              for (let i = 0; i < incidents.length; i++) {
+                if (userId === incidents[i].userId) {
+                  incident.push(incidents[i]);
+                }
+                setIncidents(incident);
               }
-              setIncidents(incident);
             }
+            setRefresh(false);
           }
-          setRefresh(false);
         })
         .catch((error) => {
           console.log(error);
         });
     }
+    return () => (mounted = false);
   }, [refresh]);
 
   const handleDeleteClick = (incident_Id) => {
     axios.defaults.headers.common["Authorization"] = localStorage.getItem(
       "jwtToken"
     );
-    axios
-      .delete(`http://localhost:8080/api/incident/delete/${incident_Id}`)
-      .then((res) => {
-        console.log(res.data.code);
-        if (res.data.code !== "200") {
-          setErrors("Error occured");
-        } else {
-          setRefresh(true);
-          setSuccess("Deleted Successfully");
-        }
-      });
+    axios.delete(`/api/incident/delete/${incident_Id}`).then((res) => {
+      console.log(res.data.code);
+      if (res.data.code !== "200") {
+        setErrors("Error occured");
+      } else {
+        setRefresh(true);
+        setSuccess("Deleted Successfully");
+      }
+    });
   };
 
   return (
