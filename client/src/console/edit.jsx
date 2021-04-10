@@ -35,7 +35,7 @@ export default class Edit extends Component {
     axios.defaults.headers.common["Authorization"] = localStorage.getItem(
       "jwtToken"
     );
-    axios.get(`http://localhost:8080/api/incident/${id}`).then((response) => {
+    axios.get(`/api/incident/${id}`).then((response) => {
       if (this._isMounted) {
         if (response.data.data !== undefined) {
           const data = response.data.data;
@@ -71,7 +71,7 @@ export default class Edit extends Component {
       );
       axios
         .put(
-          `http://localhost:8080/api/incident/edit/${id}?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}&status=${this.state.status}`,
+          `/api/incident/edit/${id}?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}&status=${this.state.status}`,
           {
             method: "PUT",
           }
@@ -121,7 +121,6 @@ export default class Edit extends Component {
             background: "white",
             color: "black",
             padding: "3rem 2rem",
-            marginTop: "4%",
             borderRadius: "8px",
           }}
         >

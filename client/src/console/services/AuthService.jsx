@@ -1,6 +1,6 @@
 export default {
   isAuthenticated: () => {
-    return fetch("http://localhost:8080/api/authenticated", {
+    return fetch("/api/authenticated", {
       headers: {
         Authorization: localStorage.getItem("jwtToken"),
       },

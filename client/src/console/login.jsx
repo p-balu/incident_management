@@ -24,7 +24,7 @@ export default class Login extends Component {
     e.preventDefault();
     const { username, password } = this.state;
     axios
-      .post("http://localhost:8080/api/auth/login", { username, password })
+      .post("/api/auth/login", { username, password })
       .then((result) => {
         localStorage.setItem("jwtToken", result.data.token);
         localStorage.setItem("role", result.data.role);

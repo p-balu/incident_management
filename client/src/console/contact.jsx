@@ -42,7 +42,7 @@ class Contact extends Component {
 
     const { firstName, lastName, email, mobile, description } = this.state;
     axios
-      .post("http://localhost:8080/api/contact", {
+      .post("/api/contact", {
         firstName,
         lastName,
         email,

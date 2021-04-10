@@ -44,7 +44,7 @@ export default class Add extends Component {
       );
       axios
         .post(
-          `http://localhost:8080/api/incident?userId=${userId}&name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}&status=${this.state.status}`,
+          `/api/incident?userId=${userId}&name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}&status=${this.state.status}`,
           {
             method: "POST",
           }

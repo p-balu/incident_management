@@ -20,7 +20,7 @@ export default function Table() {
         "jwtToken"
       );
       axios
-        .get(`http://localhost:8080/api/incidents`)
+        .get(`/api/incidents`)
         .then((res) => {
           const incidents = res.data.data;
           if (localStorage.getItem("role") === "admin") {
