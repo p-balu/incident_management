@@ -69,6 +69,7 @@ router.post("/login", (req, res) => {
               token: "JWT " + token,
               role: user.role,
               id: user._id,
+              username:user.username
             });
           } else {
             res.status(401).send({

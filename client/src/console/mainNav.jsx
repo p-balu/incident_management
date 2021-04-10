@@ -92,6 +92,7 @@ export default class MainNav extends Component {
                       localStorage.removeItem("jwtToken");
                       localStorage.setItem("role", "");
                       localStorage.setItem("userId", "");
+                      localStorage.setItem("username", "");
                     }}
                   >
                     Logout

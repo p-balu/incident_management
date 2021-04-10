@@ -55,7 +55,7 @@
     "watchify": "^4.0.0",
     "nodemon": "^2.0.7"
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "http://localhost:8080/",
   "description": "Incidemnt Management Frontend",
   "main": "index.js",
   "author": "United",

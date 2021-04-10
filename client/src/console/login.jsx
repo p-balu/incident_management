@@ -29,6 +29,7 @@ export default class Login extends Component {
         localStorage.setItem("jwtToken", result.data.token);
         localStorage.setItem("role", result.data.role);
         localStorage.setItem("userId", result.data.id);
+        localStorage.setItem("username", result.data.username);
         this.setState({ message: "" });
         this.props.history.push("/incidents");
       })
