@@ -40,7 +40,8 @@ app.use("/api", incidentsRouter);
 app.use("/api/auth", auth);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
+  console.log("env production entered on success");
+  app.use(express.static(path.join(__dirname, "client/build")));
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
   });
@@ -49,7 +50,8 @@ if (process.env.NODE_ENV === "production") {
 app.use(function (req, res, next) {
   next(createError(404));
 });
-console.log("env", process.env.NODE_ENV);
+
+console.log("environment", process.env.NODE_ENV);
 
 // error handler
 app.use(function (err, req, res, next) {
