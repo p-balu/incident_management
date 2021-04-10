@@ -174,28 +174,32 @@ export default function Table() {
                     )}
                   </td>
                   <td>{titleCase(incident.priority)}</td>
-                  <td>
-                    <Link
-                      to={`/incidents/edit/${incident._id}`}
-                      className="btn btn-sm"
-                    >
-                      <FontAwesomeIcon
-                        icon={faEdit}
-                        style={{ color: "#007bff" }}
-                      />
-                    </Link>
-                    <button
-                      className="btn btn-sm"
-                      onClick={() => {
-                        handleDeleteClick(incident._id);
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        icon={faTrashAlt}
-                        style={{ color: "#007bff" }}
-                      />{" "}
-                    </button>
-                  </td>
+                  {incident.status !== "closed" ? (
+                    <td>
+                      <Link
+                        to={`/incidents/edit/${incident._id}`}
+                        className="btn btn-sm"
+                      >
+                        <FontAwesomeIcon
+                          icon={faEdit}
+                          style={{ color: "#007bff" }}
+                        />
+                      </Link>
+                      <button
+                        className="btn btn-sm"
+                        onClick={() => {
+                          handleDeleteClick(incident._id);
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faTrashAlt}
+                          style={{ color: "#007bff" }}
+                        />{" "}
+                      </button>
+                    </td>
+                  ) : (
+                    <td></td>
+                  )}
                 </tr>
               ))
             )}
