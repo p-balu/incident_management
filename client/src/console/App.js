@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Add from "./add";
 import Edit from "./edit";
-import Dashboard from "./dashboard";
+import Home from "./home";
 import Table from "./table";
 import Login from "./login";
 import Register from "./register";
@@ -17,8 +17,8 @@ export default class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={Dashboard} />
-          <Route path="/home" component={Dashboard} />
+          <Route exact path="/" component={Home} />
+          <Route path="/home" component={Home} />
           <PublicHOC path="/login" component={Login} />
           <PublicHOC path="/register" component={Register} />
           <Route path="/contact-us" component={Contact} />

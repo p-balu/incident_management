@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import FooterNav from "./footerNav";
 import MainNav from "./mainNav";
 import { titleCase } from "title-case";
+import Dashboard from "./dashboard";
 
 export default function Table() {
   const [success, setSuccess] = useState("");
@@ -62,8 +63,15 @@ export default function Table() {
   return (
     <>
       <MainNav />
-      <div className="container" style={{ marginTop: "4%" }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className="container" style={{ marginTop: "3%" }}>
+        <Dashboard incidents={incidents} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "3%",
+          }}
+        >
           <h1>Incidents</h1>
           <a
             href="/incidents/create"

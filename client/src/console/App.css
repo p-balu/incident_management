@@ -61,3 +61,17 @@
   border-radius: 8px;
   text-transform: uppercase;
 }
+
+.card {
+  background: white;
+  color: black;
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-top: 25px;
+  max-width: 10rem;
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bolder;
+  margin: 1%;
+}

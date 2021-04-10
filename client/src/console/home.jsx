@@ -2,7 +2,7 @@ import React from "react";
 import FooterNav from "./footerNav";
 import MainNav from "./mainNav";
 
-export default function Dashboard() {
+export default function Home() {
   return (
     <>
       <MainNav />

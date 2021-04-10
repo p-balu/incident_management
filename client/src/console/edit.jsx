@@ -3,7 +3,7 @@ import MainNav from "./mainNav";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 import FooterNav from "./footerNav";
-import user from "../server/models/user";
+
 export default class Edit extends Component {
   constructor(props) {
     super(props);
