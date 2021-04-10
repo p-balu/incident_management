@@ -41,6 +41,7 @@ app.use("/api/auth", auth);
 
 if (process.env.NODE_ENV === "production") {
   console.log("build success entered production if");
+  console.log("test");
   app.use(express.static("client/build"));
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
