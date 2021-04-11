@@ -43,22 +43,48 @@ export default function Dashboard(props) {
       <div className="overView">
         <div className="spanText" style={{ width: "34%" }}>
           <p style={{ textAlign: "center" }}>Info</p>
-          <div style={{ marginTop: "16%" }}>
-            <p>
-              Hello{" "}
-              <span style={{ color: "rgb(55, 48, 163" }}>
-                {titleCase(localStorage.getItem("username"))}
-              </span>
-              ,
-            </p>
-            <p style={{ lineHeight: "24px" }}>
-              {" "}
-              Your <span style={{ color: "rgb(55, 48, 163" }}>
-                {" "}
-                {closed}
-              </span>{" "}
-              issue/s has been resolved and closed
-            </p>
+          <div style={{ marginTop: "10%" }}>
+            {localStorage.getItem("role") === "admin" ? (
+              <>
+                <p>
+                  Hey <span style={{ color: "rgb(55, 48, 163" }}>Admin </span>,
+                </p>
+                <p style={{ lineHeight: "24px" }}>
+                  {" "}
+                  You have resolved
+                  <span style={{ color: "rgb(55, 48, 163" }}>
+                    {" "}
+                    {closed}
+                  </span>{" "}
+                  issue/s,{" "}
+                  <span style={{ color: "rgb(55, 48, 163" }}> {pending}</span>{" "}
+                  is pending and{" "}
+                  <span style={{ color: "rgb(55, 48, 163" }}>
+                    {" "}
+                    {inProgress}
+                  </span>{" "} in progress
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  Hello{" "}
+                  <span style={{ color: "rgb(55, 48, 163" }}>
+                    {titleCase(localStorage.getItem("username"))}
+                  </span>
+                  ,
+                </p>
+                <p style={{ lineHeight: "24px" }}>
+                  {" "}
+                  Your{" "}
+                  <span style={{ color: "rgb(55, 48, 163" }}>
+                    {" "}
+                    {closed}
+                  </span>{" "}
+                  issue/s have been resolved or closed
+                </p>
+              </>
+            )}
           </div>
         </div>
         <div className="statusClass" style={{ width: "37%" }}>

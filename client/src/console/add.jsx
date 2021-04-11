@@ -83,7 +83,11 @@ export default class Add extends Component {
             <li className="breadcrumb-item">
               <a href="/incidents">Incidents</a>
             </li>
-            <li className="breadcrumb-item active" aria-current="page">
+            <li
+              className="breadcrumb-item active"
+              style={{ cursor: "no-drop" }}
+              aria-current="page"
+            >
               Create Incident
             </li>
           </ol>

@@ -3,36 +3,11 @@ let router = express.Router();
 let passport = require("passport");
 require("../config/passport")(passport);
 let Incident = require("../models/incidents");
-let ContactMe = require("../models/contacts");
 
 router.get("/", function (req, res, next) {
   console.log("testing", req.user);
 
   res.send("Hello from Express API server");
-});
-
-/* Post Contact page and redirect to home page */
-router.post("/contact", (req, res, next) => {
-  let newContact = ContactMe({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    mobile: req.body.mobile,
-    description: req.body.description,
-  });
-
-  ContactMe.create(newContact, (err, Contact) => {
-    if (err) {
-      console.log(err);
-      res.end(err);
-    } else {
-      res.json({
-        code: "200",
-        data: Contact,
-        message: "Contact added successfully",
-      });
-    }
-  });
 });
 
 /* Get all Incidents from incidents collection*/
@@ -138,10 +113,7 @@ router.put(
     var token = getToken(req.headers);
     if (token) {
       console.log("update entered");
-      console.log(req.query);
       let id = req.params.id;
-      console.log(id);
-
       let updateIncident = Incident({
         _id: req.params.id,
         name: req.query.name,
@@ -149,6 +121,7 @@ router.put(
         email: req.query.email,
         priority: req.query.priority,
         issueType: req.query.issueType,
+        remarks: req.query.remarks,
       });
 
       Incident.updateOne({ _id: id }, updateIncident, (err) => {
@@ -205,11 +178,9 @@ router.get(
   (req, res) => {
     let token = getToken(req.headers);
     if (token) {
-      console.log("authentication entered");
       const _id = req.user.id;
       const username = req.user.username;
       const role = req.user.role;
-      console.log(req.user);
       res.status(200).json({
         isAuthenticated: true,
         user: { username: username, role: role, _id: _id },

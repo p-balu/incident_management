@@ -52,19 +52,39 @@ export default class MainNav extends Component {
                 Home{" "}
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink
-                className="nav-link"
-                activeStyle={{
-                  borderBottom: "3px solid #ffb700",
-                  fontWeight: "600",
-                }}
-                to="/contact-us"
-              >
-                {" "}
-                Contact{" "}
-              </NavLink>
-            </li>
+            {(localStorage.getItem("jwtToken") === null ||
+              localStorage.getItem("role") === "user") && (
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link"
+                  activeStyle={{
+                    borderBottom: "3px solid #ffb700",
+                    fontWeight: "600",
+                  }}
+                  to="/contact-us"
+                >
+                  {" "}
+                  Contact{" "}
+                </NavLink>
+              </li>
+            )}
+            {localStorage.getItem("jwtToken") !== null &&
+              localStorage.getItem("role") === "admin" && (
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link"
+                    activeStyle={{
+                      borderBottom: "3px solid #ffb700",
+                      fontWeight: "600",
+                    }}
+                    to="/contacts"
+                  >
+                    {" "}
+                    Contacts{" "}
+                  </NavLink>
+                </li>
+              )}
+
             {localStorage.getItem("jwtToken") !== null ? (
               <>
                 <li className="nav-item">

@@ -17,6 +17,8 @@ export default class Edit extends Component {
       success: "",
       role: "",
       status: "",
+      remarks: "",
+      changed: false,
     };
   }
 
@@ -71,7 +73,7 @@ export default class Edit extends Component {
       );
       axios
         .put(
-          `/api/incident/edit/${id}?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}&status=${this.state.status}`,
+          `/api/incident/edit/${id}?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}&status=${this.state.status}&remarks=${this.state.remarks}`,
           {
             method: "PUT",
           }
@@ -110,7 +112,11 @@ export default class Edit extends Component {
             <li className="breadcrumb-item">
               <a href="/incidents">Incidents</a>
             </li>
-            <li className="breadcrumb-item active" aria-current="page">
+            <li
+              className="breadcrumb-item active"
+              style={{ cursor: "no-drop" }}
+              aria-current="page"
+            >
               Edit Incident
             </li>
           </ol>
@@ -122,7 +128,7 @@ export default class Edit extends Component {
             color: "black",
             padding: "3rem 2rem",
             borderRadius: "8px",
-            marginBottom:"6%",
+            marginBottom: "6%",
           }}
         >
           <h3>Edit Incident</h3>
@@ -199,7 +205,7 @@ export default class Edit extends Component {
                   id="priority"
                   value={this.state.status}
                   onChange={(event) =>
-                    this.setState({ status: event.target.value })
+                    this.setState({ status: event.target.value, changed: true })
                   }
                   required
                 >
@@ -209,6 +215,23 @@ export default class Edit extends Component {
                   {/* <option value="completed">Completed</option> */}
                   <option value="closed">Closed</option>
                 </select>
+              </div>
+            )}
+
+            {this.state.changed && (
+              <div className="form-group">
+                <label htmlFor="remarks">Remarks</label>
+                <textarea
+                  className="form-control"
+                  id="remarks"
+                  rows="3"
+                  placeholder="Remarks"
+                  value={this.state.remarks}
+                  onChange={(event) =>
+                    this.setState({ remarks: event.target.value })
+                  }
+                  required
+                ></textarea>
               </div>
             )}
 

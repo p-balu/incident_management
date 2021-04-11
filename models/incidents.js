@@ -30,6 +30,13 @@ let incidentModel = mongoose.Schema(
       type: String,
       default: "low",
     },
+    remarks: {
+      type: String,
+      default: "",
+    },
+
+    created_at: { type: Date, default: Date.now },
+    updated_at: { type: Date, default: Date.now },
   },
   {
     collection: "incidents",

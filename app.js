@@ -30,6 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 //import routes
 let incidentsRouter = require("./routes/incidents");
 let auth = require("./routes/auth");
+let contactRouter = require("./routes/contact");
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -39,6 +40,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 app.use("/api", incidentsRouter);
 app.use("/api/auth", auth);
+app.use("/api/contact", contactRouter);
 
 if (process.env.NODE_ENV == "production") {
   app.use(express.static("client/build"));

@@ -1,4 +1,4 @@
-import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import { faEdit, faEye, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -7,18 +7,15 @@ import FooterNav from "./footerNav";
 import MainNav from "./mainNav";
 import { titleCase } from "title-case";
 import Dashboard from "./dashboard";
+import { formatDistance } from "date-fns";
 
 export default function Table() {
   const [success, setSuccess] = useState("");
   const [errors, setErrors] = useState("");
   const [refresh, setRefresh] = useState(true);
   const [incidents, setIncidents] = useState([]);
-  const isMountedRef = useRef(null);
-
-  console.log("test", refresh);
-
+  console.log("refers", refresh);
   useEffect(() => {
-    let mounted = true;
     if (refresh) {
       axios.defaults.headers.common["Authorization"] = localStorage.getItem(
         "jwtToken"
@@ -27,27 +24,24 @@ export default function Table() {
         .get(`/api/incidents`)
         .then((res) => {
           const incidents = res.data.data;
-          if (mounted) {
-            if (localStorage.getItem("role") === "admin") {
-              setIncidents(incidents);
-            } else {
-              let incident = [];
-              let userId = localStorage.getItem("userId");
-              for (let i = 0; i < incidents.length; i++) {
-                if (userId === incidents[i].userId) {
-                  incident.push(incidents[i]);
-                }
-                setIncidents(incident);
+          if (localStorage.getItem("role") === "admin") {
+            setIncidents(incidents);
+          } else {
+            let incident = [];
+            let userId = localStorage.getItem("userId");
+            for (let i = 0; i < incidents.length; i++) {
+              if (userId === incidents[i].userId) {
+                incident.push(incidents[i]);
               }
+              setIncidents(incident);
             }
-            setRefresh(false);
           }
+          setRefresh(false);
         })
         .catch((error) => {
           console.log(error);
         });
     }
-    return () => (mounted = false);
   }, [refresh]);
 
   const handleDeleteClick = (incident_Id) => {
@@ -78,14 +72,16 @@ export default function Table() {
           }}
         >
           <h1>Incidents</h1>
-          <a
-            href="/incidents/create"
-            style={{ marginBottom: "10px" }}
-            className="btn btn-primary btn-lg"
-            role="button"
-          >
-            Create Incident
-          </a>
+          {localStorage.getItem("role") !== "admin" && (
+            <a
+              href="/incidents/create"
+              style={{ marginBottom: "10px" }}
+              className="btn btn-primary btn-lg"
+              role="button"
+            >
+              Create Incident
+            </a>
+          )}
         </div>
         <table
           className="table table-striped"
@@ -104,6 +100,7 @@ export default function Table() {
               <th scope="col">Incident Type</th>
               <th scope="col">Status</th>
               <th scope="col">Priority</th>
+              <th scope="col">Last Updated</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
@@ -151,7 +148,7 @@ export default function Table() {
                       </span>
                     )}
 
-                    {incident.status === "completed" && (
+                    {/* {incident.status === "completed" && (
                       <span
                         className="tableSpan"
                         style={{
@@ -161,7 +158,7 @@ export default function Table() {
                       >
                         {incident.status}
                       </span>
-                    )}
+                    )} */}
                     {incident.status === "closed" && (
                       <span
                         className="tableSpan"
@@ -174,9 +171,23 @@ export default function Table() {
                       </span>
                     )}
                   </td>
+
                   <td>{titleCase(incident.priority)}</td>
+                  <td>
+                    {formatDistance(new Date(incident.updated_at), new Date())}{" "}
+                    ago{" "}
+                  </td>
                   {incident.status !== "closed" ? (
                     <td>
+                      <Link
+                        to={`/incidents/view/${incident._id}`}
+                        className="btn btn-sm"
+                      >
+                        <FontAwesomeIcon
+                          icon={faEye}
+                          style={{ color: "#007bff" }}
+                        />
+                      </Link>
                       <Link
                         to={`/incidents/edit/${incident._id}`}
                         className="btn btn-sm"
@@ -199,7 +210,17 @@ export default function Table() {
                       </button>
                     </td>
                   ) : (
-                    <td></td>
+                    <td>
+                      <Link
+                        to={`/incidents/view/${incident._id}`}
+                        className="btn btn-sm"
+                      >
+                        <FontAwesomeIcon
+                          icon={faEye}
+                          style={{ color: "#007bff" }}
+                        />
+                      </Link>
+                    </td>
                   )}
                 </tr>
               ))

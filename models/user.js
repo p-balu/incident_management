@@ -26,7 +26,10 @@ let UserModel = new Schema(
       type: String,
       default: "user",
     },
+    created_at: { type: Date, default: Date.now }, 
+    updated_at: { type: Date, default: Date.now }
   },
+
   {
     collection: "users",
   }

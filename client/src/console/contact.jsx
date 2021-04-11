@@ -42,7 +42,7 @@ class Contact extends Component {
 
     const { firstName, lastName, email, mobile, description } = this.state;
     axios
-      .post("/api/contact", {
+      .post("/api/contact/contact", {
         firstName,
         lastName,
         email,
@@ -80,7 +80,6 @@ class Contact extends Component {
           className="container text-center"
           style={{
             marginTop: "2%",
-            marginBottom: "2%",
             color: "black",
             marginBottom: "6%",
           }}

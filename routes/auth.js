@@ -14,7 +14,6 @@ router.post("/register", function (req, res) {
     !req.body.email ||
     !req.body.password
   ) {
-    console.log("no entries");
     res.json({
       success: false,
       msg: "Please enter email, username and password.",
@@ -28,16 +27,13 @@ router.post("/register", function (req, res) {
     });
     // save the user
     User.create(newUser, (err) => {
-      console.log(" entries");
 
       if (err) {
-        console.log("err register entered");
         return res.json({
           success: false,
           msg: "Username or email already exists.",
         });
       }
-      console.log("success");
       res.json({ success: true, msg: "Successful created new user." });
     });
   }
@@ -45,7 +41,6 @@ router.post("/register", function (req, res) {
 
 //post request for login
 router.post("/login", (req, res) => {
-  console.log(req.body.username);
   User.findOne(
     {
       username: req.body.username,
