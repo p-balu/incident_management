@@ -94,6 +94,7 @@ export default function Table() {
             textAlign: "center",
             color: "black",
             background: "white",
+            marginBottom: "6%",
           }}
         >
           <thead>

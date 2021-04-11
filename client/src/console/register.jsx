@@ -55,6 +55,7 @@ export default class Register extends Component {
           className="container"
           style={{
             marginTop: "4%",
+            marginBottom:"6%",
           }}
         >
           <form onSubmit={this.handleSubmit}>

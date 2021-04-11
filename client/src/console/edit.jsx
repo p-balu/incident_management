@@ -122,6 +122,7 @@ export default class Edit extends Component {
             color: "black",
             padding: "3rem 2rem",
             borderRadius: "8px",
+            marginBottom:"6%",
           }}
         >
           <h3>Edit Incident</h3>

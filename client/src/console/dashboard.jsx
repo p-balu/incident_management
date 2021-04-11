@@ -41,7 +41,7 @@ export default function Dashboard(props) {
     <>
       <h1>Overview</h1>
       <div className="overView">
-        <div className="spanText" style={{ width: "31%" }}>
+        <div className="spanText" style={{ width: "34%" }}>
           <p style={{ textAlign: "center" }}>Info</p>
           <div style={{ marginTop: "16%" }}>
             <p>
@@ -51,15 +51,17 @@ export default function Dashboard(props) {
               </span>
               ,
             </p>
-            <p>
+            <p style={{ lineHeight: "24px" }}>
               {" "}
-              Your{" "}
-              <span style={{ color: "rgb(55, 48, 163" }}> {closed}</span> issues
-              has been resolved and closed
+              Your <span style={{ color: "rgb(55, 48, 163" }}>
+                {" "}
+                {closed}
+              </span>{" "}
+              issue/s has been resolved and closed
             </p>
           </div>
         </div>
-        <div className="statusClass" style={{ width: "45%" }}>
+        <div className="statusClass" style={{ width: "37%" }}>
           <p style={{ textAlign: "center" }}>Stats</p>
 
           <div className="overView1">
@@ -111,7 +113,7 @@ export default function Dashboard(props) {
             </div>
           </div>
         </div>
-        <div className="statusClass" style={{ width: "20%" }}>
+        <div className="statusClass" style={{ width: "25%" }}>
           <p style={{ textAlign: "center" }}>Resolved Status</p>
           <p className="percentage">{status} %</p>
         </div>

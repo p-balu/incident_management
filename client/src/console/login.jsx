@@ -47,7 +47,10 @@ export default class Login extends Component {
     return (
       <>
         <MainNav />
-        <div className="container" style={{ marginTop: "4%" }}>
+        <div
+          className="container"
+          style={{ marginTop: "4%", marginBottom: "6%" }}
+        >
           <form onSubmit={this.handleSubmit}>
             {messages !== "" && (
               <div
