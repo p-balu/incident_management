@@ -76,6 +76,7 @@ export default class Add extends Component {
           style={{
             marginTop: "3%",
             paddingLeft: "0",
+            marginBottom:"6%",
             paddingRight: "0",
           }}
         >

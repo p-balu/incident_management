@@ -63,7 +63,10 @@ export default function Table() {
   return (
     <>
       <MainNav />
-      <div className="container" style={{ marginTop: "3%" }}>
+      <div
+        className="container"
+        style={{ marginTop: "3%", marginBottom: "5%" }}
+      >
         <Dashboard incidents={incidents} />
         <div
           style={{

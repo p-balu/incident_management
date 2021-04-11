@@ -78,7 +78,7 @@ class Contact extends Component {
         <MainNav />
         <main
           className="container text-center"
-          style={{ marginTop: "2%", marginBottom: "2%", color: "black" }}
+          style={{ marginTop: "2%", marginBottom: "6%", color: "black" }}
         >
           {success !== "" && (
             <div

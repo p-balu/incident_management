@@ -121,7 +121,7 @@ export default class Edit extends Component {
             background: "white",
             color: "black",
             padding: "3rem 2rem",
-            marginTop: "4%",
+            marginBottom: "6%",
             borderRadius: "8px",
           }}
         >
