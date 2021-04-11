@@ -57,12 +57,13 @@ export default function Dashboard(props) {
                     {closed}
                   </span>{" "}
                   issue/s,{" "}
-                  <span style={{ color: "rgb(55, 48, 163" }}> {pending}</span>{" "}
+                  <span style={{ color: "rgba(153, 27, 27)" }}> {pending}</span>{" "}
                   is pending and{" "}
-                  <span style={{ color: "rgb(55, 48, 163" }}>
+                  <span style={{ color: "rgba(146, 64, 14)" }}>
                     {" "}
                     {inProgress}
-                  </span>{" "} in progress
+                  </span>{" "}
+                  in progress
                 </p>
               </>
             ) : (
@@ -91,7 +92,12 @@ export default function Dashboard(props) {
           <p style={{ textAlign: "center" }}>Stats</p>
 
           <div className="overView1">
-            <div className="card col">
+            <div
+              className="card col"
+              style={{
+                backgroundColor: "#f5f4f4",
+              }}
+            >
               <h5 className="fs-3 text">Total Incidents</h5>
               <p>{props.incidents.length}</p>
             </div>
