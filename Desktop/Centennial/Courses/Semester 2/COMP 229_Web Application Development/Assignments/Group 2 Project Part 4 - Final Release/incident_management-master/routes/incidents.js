@@ -1,0 +1,206 @@
+let express = require("express");
+let router = express.Router();
+let passport = require("passport");
+require("../config/passport")(passport);
+let Incident = require("../models/incidents");
+
+router.get("/", function (req, res, next) {
+  console.log("testing", req.user);
+
+  res.send("Hello from Express API server");
+});
+
+/* Get all Incidents from incidents collection*/
+router.get(
+  "/incidents",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    var token = getToken(req.headers);
+    if (token) {
+      Incident.find(function (err, IncidentList) {
+        if (err) {
+          return console.log(err);
+        } else {
+          //on success
+          res.json({
+            code: "200",
+            data: IncidentList,
+            message: "Incidents fetched successfully",
+          });
+        }
+      });
+    } else {
+      return res.status(401).send({ success: false, msg: "Unauthorized." });
+    }
+  }
+);
+
+/* Get an Incident by id from incidents collection*/
+router.get(
+  "/incident/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    var token = getToken(req.headers);
+    if (token) {
+      let id = req.params.id;
+      console.log(id);
+      Incident.findById(id, (err, IncidentList) => {
+        console.log(IncidentList);
+        if (err) {
+          console.log(err);
+          res.end(err);
+        } else if (IncidentList === undefined || IncidentList === null) {
+          res.json({
+            code: "304",
+            message: "Incident not found",
+          });
+        } else {
+          //on success
+          res.json({
+            code: "200",
+            data: IncidentList,
+            message: "Incident fetched successfully",
+          });
+        }
+      });
+    } else {
+      return res.status(401).send({ success: false, msg: "Unauthorized." });
+    }
+  }
+);
+
+/* Post Incident page and store values in database*/
+router.post(
+  "/incident",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    var token = getToken(req.headers);
+    if (token) {
+      let newIncident = Incident({
+        userId: req.query.userId,
+        name: req.query.name,
+        email: req.query.email,
+        issueType: req.query.issueType,
+        status: req.query.status,
+        description: req.query.description,
+        priority: req.query.priority,
+      });
+
+      Incident.create(newIncident, (err, IncidentList) => {
+        if (err) {
+          console.log(err);
+          res.end(err);
+        } else {
+          //on success
+          res.json({
+            code: "200",
+            data: IncidentList,
+            message: "Incident created successfully",
+          });
+        }
+      });
+    } else {
+      return res.status(401).send({ success: false, msg: "Unauthorized." });
+    }
+  }
+);
+
+/* PUT method for update*/
+router.put(
+  "/incident/edit/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    var token = getToken(req.headers);
+    if (token) {
+      console.log("update entered");
+      let id = req.params.id;
+      let updateIncident = Incident({
+        _id: req.params.id,
+        name: req.query.name,
+        status: req.query.status,
+        email: req.query.email,
+        priority: req.query.priority,
+        issueType: req.query.issueType,
+        remarks: req.query.remarks,
+      });
+
+      Incident.updateOne({ _id: id }, updateIncident, (err) => {
+        console.log("test loop", id);
+        if (err) {
+          console.log(err);
+          res.end(err);
+        } else {
+          console.log("success");
+          //on success
+          res.json({
+            code: "200",
+            message: "Incident updated successfully",
+          });
+        }
+      });
+    } else {
+      return res.status(401).send({ success: false, msg: "Unauthorized." });
+    }
+  }
+);
+
+/* DELETE method for delete operation. */
+router.delete(
+  "/incident/delete/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    var token = getToken(req.headers);
+    if (token) {
+      console.log("delete entered");
+      let id = req.params.id;
+
+      Incident.deleteOne({ _id: id }, (err) => {
+        if (err) {
+          console.log(err);
+          res.end(err);
+        } else {
+          //on success
+          res.json({
+            code: "200",
+            message: "Incident deleted successfully",
+          });
+        }
+      });
+    } else {
+      return res.status(401).send({ success: false, msg: "Unauthorized." });
+    }
+  }
+);
+
+router.get(
+  "/authenticated",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let token = getToken(req.headers);
+    if (token) {
+      const _id = req.user.id;
+      const username = req.user.username;
+      const role = req.user.role;
+      res.status(200).json({
+        isAuthenticated: true,
+        user: { username: username, role: role, _id: _id },
+      });
+    } else {
+      return res.status(401).send({ success: false, msg: "Unauthorized." });
+    }
+  }
+);
+
+getToken = function (headers) {
+  if (headers && headers.authorization) {
+    let parted = headers.authorization.split(" ");
+    if (parted.length === 2) {
+      return parted[1];
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+};
+module.exports = router;
