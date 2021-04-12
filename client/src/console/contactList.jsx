@@ -1,4 +1,4 @@
-import { faEdit, faEye, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import { faEdit, faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -145,6 +145,15 @@ export default function ContactList() {
                   <td>{contact.mobile}</td>
                   {contact.status !== "contacted" ? (
                     <td>
+                      <a
+                        href={`mailto:${contact.email}`}
+                        className="btn btn-sm"
+                      >
+                        <FontAwesomeIcon
+                          icon={faEnvelope}
+                          style={{ color: "#007bff" }}
+                        />{" "}
+                      </a>
                       <Link
                         to={`/contacts/edit/${contact._id}`}
                         className="btn btn-sm"
