@@ -15,7 +15,9 @@ export default function Table() {
   const [refresh, setRefresh] = useState(true);
   const [incidents, setIncidents] = useState([]);
   console.log("refers", refresh);
+
   useEffect(() => {
+    let _isMounted = true;
     if (refresh) {
       axios.defaults.headers.common["Authorization"] = localStorage.getItem(
         "jwtToken"
@@ -23,26 +25,36 @@ export default function Table() {
       axios
         .get(`/api/incidents`)
         .then((res) => {
-          const incidents = res.data.data;
-          if (localStorage.getItem("role") === "admin") {
-            setIncidents(incidents);
-          } else {
-            let incident = [];
-            let userId = localStorage.getItem("userId");
-            for (let i = 0; i < incidents.length; i++) {
-              if (userId === incidents[i].userId) {
-                incident.push(incidents[i]);
+          if (_isMounted) {
+            const incidents = res.data.data;
+            if (localStorage.getItem("role") === "admin") {
+              setIncidents(incidents);
+            } else {
+              let incident = [];
+              let userId = localStorage.getItem("userId");
+              for (let i = 0; i < incidents.length; i++) {
+                if (userId === incidents[i].userId) {
+                  incident.push(incidents[i]);
+                }
+                setIncidents(incident);
               }
-              setIncidents(incident);
             }
+            setRefresh(false);
           }
-          setRefresh(false);
         })
         .catch((error) => {
           console.log(error);
         });
     }
   }, [refresh]);
+
+  useEffect(() => {
+    setRefresh(true);
+  });
+
+  useEffect(() => {
+    let _isMounted = false;
+  }, []);
 
   const handleDeleteClick = (incident_Id) => {
     axios.defaults.headers.common["Authorization"] = localStorage.getItem(

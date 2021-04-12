@@ -230,7 +230,6 @@ export default class Edit extends Component {
                   onChange={(event) =>
                     this.setState({ remarks: event.target.value })
                   }
-                  required
                 ></textarea>
               </div>
             )}

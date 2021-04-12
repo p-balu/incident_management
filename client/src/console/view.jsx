@@ -33,33 +33,65 @@ export default class View extends Component {
     this._isMounted = false;
   }
 
+  handleClick = (e) => {
+    e.preventDefault();
+    console.log("clickde and update entered");
+    const id = this.props.match.params.id;
+    this.setState({
+      submitted: true,
+    });
+    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+      "jwtToken"
+    );
+    axios
+      .put(
+        `/api/incident/edit/${id}?name=${this.state.name}&email=${this.state.email}&description=${this.state.description}&issueType=${this.state.issueType}&priority=${this.state.priority}&status=in_progress&remarks=${this.state.remarks}`,
+        {
+          method: "PUT",
+        }
+      )
+      .then((res) => {
+        if (res.code === 200) {
+          this.setState({
+            success: "Incident reopend Success:)",
+            submitted: true,
+          });
+        } else {
+          this.setState({
+            errors: "Error",
+          });
+        }
+      });
+  };
+
   fetchData = (id) => {
     this._isMounted = true;
     axios.defaults.headers.common["Authorization"] = localStorage.getItem(
       "jwtToken"
     );
-    axios.get(`/api/incident/${id}`).then((response) => {
-      if (this._isMounted) {
-        if (response.data.data !== undefined) {
-          const data = response.data.data;
-          this.setState({
-            name: data.name,
-            email: data.email,
-            issueType: data.issueType,
-            description: data.description,
-            priority: data.priority,
-            role: data.role,
-            status: data.status,
-            updated_at: data.updated_at,
-            remarks: data.remarks,
-          });
-        } else {
-          this.setState({
-            redirect: true,
-          });
+      axios.get(`/api/incident/${id}`).then((response) => {
+        if (this._isMounted) {
+          if (response.data.data !== undefined) {
+            const data = response.data.data;
+            this.setState({
+              name: data.name,
+              email: data.email,
+              issueType: data.issueType,
+              description: data.description,
+              priority: data.priority,
+              role: data.role,
+              status: data.status,
+              updated_at: data.updated_at,
+              remarks: data.remarks,
+              refresh: false,
+            });
+          } else {
+            this.setState({
+              redirect: true,
+            });
+          }
         }
-      }
-    });
+      });
   };
 
   render() {
@@ -210,6 +242,24 @@ export default class View extends Component {
                 </label>
                 <p>{this.state.description}</p>
               </div>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginTop: "0.5%",
+              }}
+            >
+              {localStorage.getItem("role") === "admin" &&
+                this.state.status === "closed" && (
+                  <button
+                    onClick={this.handleClick.bind(this)}
+                    type="submit"
+                    className="btn btn-primary"
+                  >
+                    ReOpen Issue
+                  </button>
+                )}
             </div>
             {/* <div style={{ display: "flex" }}>
               <a
