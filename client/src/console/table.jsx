@@ -49,11 +49,8 @@ export default function Table() {
   }, [refresh]);
 
   useEffect(() => {
-    setRefresh(true);
-  });
-
-  useEffect(() => {
     let _isMounted = false;
+    setRefresh(true);
   }, []);
 
   const handleDeleteClick = (incident_Id) => {

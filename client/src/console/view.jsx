@@ -69,29 +69,29 @@ export default class View extends Component {
     axios.defaults.headers.common["Authorization"] = localStorage.getItem(
       "jwtToken"
     );
-      axios.get(`/api/incident/${id}`).then((response) => {
-        if (this._isMounted) {
-          if (response.data.data !== undefined) {
-            const data = response.data.data;
-            this.setState({
-              name: data.name,
-              email: data.email,
-              issueType: data.issueType,
-              description: data.description,
-              priority: data.priority,
-              role: data.role,
-              status: data.status,
-              updated_at: data.updated_at,
-              remarks: data.remarks,
-              refresh: false,
-            });
-          } else {
-            this.setState({
-              redirect: true,
-            });
-          }
+    axios.get(`/api/incident/${id}`).then((response) => {
+      if (this._isMounted) {
+        if (response.data.data !== undefined) {
+          const data = response.data.data;
+          this.setState({
+            name: data.name,
+            email: data.email,
+            issueType: data.issueType,
+            description: data.description,
+            priority: data.priority,
+            role: data.role,
+            status: data.status,
+            updated_at: data.updated_at,
+            remarks: data.remarks,
+            refresh: false,
+          });
+        } else {
+          this.setState({
+            redirect: true,
+          });
         }
-      });
+      }
+    });
   };
 
   render() {
@@ -250,16 +250,15 @@ export default class View extends Component {
                 marginTop: "0.5%",
               }}
             >
-              {localStorage.getItem("role") === "admin" &&
-                this.state.status === "closed" && (
-                  <button
-                    onClick={this.handleClick.bind(this)}
-                    type="submit"
-                    className="btn btn-primary"
-                  >
-                    ReOpen Issue
-                  </button>
-                )}
+              {this.state.status === "closed" && (
+                <button
+                  onClick={this.handleClick.bind(this)}
+                  type="submit"
+                  className="btn btn-primary"
+                >
+                  ReOpen Issue
+                </button>
+              )}
             </div>
             {/* <div style={{ display: "flex" }}>
               <a
@@ -285,7 +284,7 @@ export default class View extends Component {
               <h3>Remarks</h3>
             </div>
             <div className="remarksContainer" style={{}}>
-              {this.state.remarks}
+              {titleCase(this.state.remarks)}
             </div>
           </>
         )}
